@@ -1,0 +1,36 @@
+name: Java CI
+
+# Trigger the workflow when code is pushed
+# or when a pull request is created for main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Run the job on an Ubuntu virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the source code
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      # Step 3: Give Maven Wrapper execution permission
+      - name: Make Maven Wrapper executable
+        run: chmod +x mvnw
+
+      # Step 4: Build the project and run tests
+      - name: Build and Test
+        run: ./mvnw clean test
